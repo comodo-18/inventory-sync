@@ -1,5 +1,7 @@
 package com.anurag.inventory_sync.controller;
 
+import com.anurag.inventory_sync.entity.InventoryItem;
+import com.anurag.inventory_sync.repository.InventoryRepository;
 import com.anurag.inventory_sync.service.StockReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class InventoryController {
 
     private final StockReservationService stockReservationService;
+    private final InventoryRepository inventoryRepository;
 
     @PostMapping("/reserve")
     public ResponseEntity<String> reserveStock(
@@ -28,13 +31,17 @@ public class InventoryController {
                     "Could not reserve — insufficient stock or lock timeout");
         }
     }
-    //for testing only
+
     @PostMapping("/seed")
     public ResponseEntity<String> seed(
             @RequestParam Long productId,
             @RequestParam int stock) {
-        // create or update inventory item with given stock
-        // (implement using inventoryRepository)
+        InventoryItem item = new InventoryItem();
+        item.setProductId(productId);
+        item.setStock(stock);
+        item.setStatus("AVAILABLE");
+        item.setLastUpdated(java.time.Instant.now());
+        inventoryRepository.save(item);
         return ResponseEntity.ok("Seeded product " + productId
                 + " with stock " + stock);
     }
