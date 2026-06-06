@@ -5,6 +5,7 @@ import com.anurag.inventory_sync.event.CacheInvalidationEvent;
 import com.anurag.inventory_sync.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.time.Instant;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(name = "kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class InventoryKafkaConsumer {
 
     private final InventoryRepository inventoryRepository;
