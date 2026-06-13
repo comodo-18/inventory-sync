@@ -45,4 +45,11 @@ public class InventoryController {
         return ResponseEntity.ok("Seeded product " + productId
                 + " with stock " + stock);
     }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getInventory(@PathVariable Long productId) {
+        return inventoryRepository.findByProductId(productId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
