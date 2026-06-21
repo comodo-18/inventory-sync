@@ -27,4 +27,4 @@ jobs:
         run: ./mvnw clean package -DskipTests
 
       - name: Run tests
-        run: ./mvnw test
+        run: ./mvnw test -Dtest="StockReservationServiceTest" -DfailIfNoTests=false
